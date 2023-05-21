@@ -1,3 +1,4 @@
+package duck;
 
 public abstract class Duck {
 
