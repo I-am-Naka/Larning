@@ -26,20 +26,23 @@ const invoice = JSON.parse(JSON.stringify(invoiceJson));
 const plays = JSON.parse(JSON.stringify(playJson));
 console.log(statement(invoice, plays));
 
+
+
+
+
+
 function statement(invoice, plays) {
     let totalAmount = 0;
-    let volumeCredits = 0;
     let result = `Statement for ${invoice.customer}
 `;
     for (let perf of invoice.performances) {
-        volumeCredits = volumeCreditsFor(perf);
-
         // 注文の内約を出力
-        result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)
 `;
         totalAmount += amountFor(perf);
     }
-    result += `Amount owed is ${usd(totalAmount / 100)}
+    let volumeCredits = totalVolumeCredits();
+    result += `Amount owed is ${usd(totalAmount)}
 `;
     result += `You earned ${volumeCredits} credits
 `;
@@ -76,12 +79,20 @@ function volumeCreditsFor(perf) {
     let volumeCredits = 0;
     volumeCredits += Math.max(perf.audience - 30, 0);
     if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
+    return volumeCredits;
 }
 
 function usd(aNumber) {
-    return new Intl.NumberFormat("en-US",
-        {
-            style: "currency", currency: "USD",
-            minimumFractionDigits: 2
-        }).format(aNumber / 100);
+    return new Intl.NumberFormat("en-US", {
+        style: "currency", currency: "USD",
+        minimumFractionDigits: 2
+    }).format(aNumber / 100);
+}
+
+function totalVolumeCredits() {
+    let volumeCredits = 0;
+    for (let perf of invoice.performances) {
+        volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
 }
