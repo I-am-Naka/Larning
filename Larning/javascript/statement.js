@@ -1,19 +1,48 @@
+const invoiceJson = {
+    "customer": "BigCo",
+    "performances": [
+        {
+            "playID": "hamlet",
+            "audience": 55
+        },
+        {
+            "playID": "as-like",
+            "audience": 35
+        },
+        {
+            "playID": "othello",
+            "audience": 40
+        }
+    ]
+}
+
+const playJson = {
+    "hamlet": { "name": "Hamlet", "type": "tragedy" },
+    "as-like": { "name": "As You Like It", "type": "comedy" },
+    "othello": { "name": "Othello", "type": "tragedy" }
+};
+
+const invoice = JSON.parse(JSON.stringify(invoiceJson));
+const plays = JSON.parse(JSON.stringify(playJson));
+console.log(statement(invoice, plays));
+
 function statement(invoice, plays) {
     let totalAmount = 0;
     let volumeCredits = 0;
-    let result = 'Statement for ${invoice.customer}¥n';
-    const format = new Intl.NumberFormat("en-US", {
-            style: "currency", currency: "USD",
-            minimumFractionDigits: 2 }).format;
+    let result = `Statement for ${invoice.customer}
+`;
     for (let perf of invoice.performances) {
         volumeCredits = volumeCreditsFor(perf);
 
         // 注文の内約を出力
-        result += ' $(playFor(perf).name): ${format(amountFor(perf)/100)} (${perf.audience} seats)¥n';
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)
+`;
         totalAmount += amountFor(perf);
     }
-    result += 'Amount owed is ${format(totalAmount/100)}¥n';
-    result += 'You earned ${volumeCredits} credits¥n';
+    result += `Amount owed is ${usd(totalAmount / 100)}
+`;
+    result += `You earned ${volumeCredits} credits
+`;
     return result;
 }
 
@@ -34,7 +63,7 @@ function amountFor(aPerformance) {
             result += 300 * aPerformance.audience;
             break;
         default:
-            throw new Error('unknown type: ${playFor(aPerformance).type}');
+            throw new Error(`unknown type: ${playFor(aPerformance).type}`);
     }
     return result;
 }
@@ -47,4 +76,12 @@ function volumeCreditsFor(perf) {
     let volumeCredits = 0;
     volumeCredits += Math.max(perf.audience - 30, 0);
     if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
+}
+
+function usd(aNumber) {
+    return new Intl.NumberFormat("en-US",
+        {
+            style: "currency", currency: "USD",
+            minimumFractionDigits: 2
+        }).format(aNumber / 100);
 }
