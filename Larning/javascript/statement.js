@@ -33,19 +33,16 @@ console.log(statement(invoice, plays));
 
 function statement(invoice, plays) {
     let totalAmount = 0;
-    let result = `Statement for ${invoice.customer}
-`;
+    let result = `Statement for ${invoice.customer}\n`;
     for (let perf of invoice.performances) {
         // 注文の内約を出力
-        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)
-`;
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    }
+    for (let perf of invoice.performances) {
         totalAmount += amountFor(perf);
     }
-    let volumeCredits = totalVolumeCredits();
-    result += `Amount owed is ${usd(totalAmount)}
-`;
-    result += `You earned ${volumeCredits} credits
-`;
+    result += `Amount owed is ${usd(totalAmount)}\n`;
+    result += `You earned ${totalVolumeCredits()} credits\n`;
     return result;
 }
 
