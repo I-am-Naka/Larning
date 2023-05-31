@@ -8,11 +8,13 @@ class PerformanceCalculator {
         let result = 0;
         switch (this.play.type) {
             case "tragedy":
-                result = 40000;
-                if (this.performance.audience > 30) {
-                    result += 1000 * (this.performance.audience - 30);
-                }
-                break;
+                // オーバーライド
+                // result = 40000;
+                // if (this.performance.audience > 30) {
+                //     result += 1000 * (this.performance.audience - 30);
+                // }
+                // break;
+                throw '想定外の呼び出し' // 念の為throw
             case "comedy":
                 result = 30000;
                 if (this.performance.audience > 20) {
@@ -77,7 +79,13 @@ function createPerformanceCalculator(aPerformance, aPlay) {
 }
 
 class TragedyCalculator extends PerformanceCalculator {
-
+    get amount() {
+        let result = 40000;
+        if (this.performance.audience > 30) {
+            result += 1000 * (this.performance.audience - 30);
+        }
+        return result;
+    }
 }
 
 class ComedyCalculator extends PerformanceCalculator {
