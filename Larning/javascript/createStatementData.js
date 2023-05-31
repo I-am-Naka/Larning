@@ -1,21 +1,11 @@
-class PerformanceCalculator {
-    constructor(aPerformance, aPlay) {
-        this.performance = aPerformance;
-        this.play = aPlay;
-    }
-
-    get amount() {
-        throw new Error('サブクラスの責務');
-    }
-}
 
 function createStatementData(invoice, plays) {
-    const statementData = {};
-    statementData.customer = invoice.customer;
-    statementData.performances = invoice.performances.map(enrichPerformance);
-    statementData.totalAmount = totalAmount(statementData);
-    statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-    return statementData;
+    const result = {};
+    result.customer = invoice.customer;
+    result.performances = invoice.performances.map(enrichPerformance);
+    result.totalAmount = totalAmount(result);
+    result.totalVolumeCredits = totalVolumeCredits(result);
+    return result;
 
     function enrichPerformance(aPerformance) {
         const calculator = createPerformanceCalculator(aPerformance, playFor(aPerformance));
@@ -44,10 +34,25 @@ function createStatementData(invoice, plays) {
 }
 
 function createPerformanceCalculator(aPerformance, aPlay) {
-    switch(aPlay.type) {
+    switch (aPlay.type) {
         case "tragedy": return new TragedyCalculator(aPerformance, aPlay);
-        case "comedy" : return new ComedyCalculator(aPerformance, aPlay);
-        default: throw new Error(`知の演劇の種類: ${aPlay.type}`);
+        case "comedy": return new ComedyCalculator(aPerformance, aPlay);
+        default: throw new Error(`unknown type: ${aPlay.type}`);
+    }
+}
+
+class PerformanceCalculator {
+    constructor(aPerformance, aPlay) {
+        this.performance = aPerformance;
+        this.play = aPlay;
+    }
+
+    get amount() {
+        throw new Error('サブクラスの責務');
+    }
+
+    get volumeCredits() {
+        return Math.max(this.performance.audience - 30, 0);
     }
 }
 
@@ -69,5 +74,9 @@ class ComedyCalculator extends PerformanceCalculator {
         }
         result += 300 * this.performance.audience;
         return result;
+    }
+
+    get volumeCredits() {
+        return super.volumeCredits + Math.max(this.performance.audience / 5);
     }
 }
