@@ -1,21 +1,42 @@
 package command;
 
 public class CeilingFan {
-    String name;
+    public static final int HIGH = 3;
+    public static final int MEDIUM = 2;
+    public static final int LOW = 1;
+    public static final int OFF = 0;
+    String location;
+    int speed;
 
-    public CeilingFan(String name) {
-        this.name = name;
+    public CeilingFan(String location) {
+        this.location = location;
+        speed = OFF;
     }
 
-    public CeilingFan() {
-        this("");
+    public void high() {
+        speed = HIGH;
+        System.out.println("ファンの強さは「強」です");
     }
 
-    public void on() {
-        System.out.println(name + " " + "シーリングファンが回っています");
+    public void medium() {
+        speed = MEDIUM;
+        System.out.println("ファンの強さは「中」です");
+
+    }
+
+    public void low() {
+        speed = LOW;
+        System.out.println("ファンの強さは「弱」です");
+
     }
 
     public void off() {
-        System.out.println(name + " " + "シーリングファンが止まっています");
+        speed = OFF;
+        System.out.println("ファンは止まっています");
+
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 }

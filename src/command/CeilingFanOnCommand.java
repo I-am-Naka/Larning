@@ -1,17 +1,17 @@
-package command;
+// package command;
 
-public class CeilingFanOnCommand implements Command {
-    CeilingFan ceilingFan;
+// public class CeilingFanOnCommand implements Command {
+//     CeilingFan ceilingFan;
 
-    public CeilingFanOnCommand(CeilingFan ceilingFan) {
-        this.ceilingFan = ceilingFan;
-    }
+//     public CeilingFanOnCommand(CeilingFan ceilingFan) {
+//         this.ceilingFan = ceilingFan;
+//     }
 
-    public void execute() {
-        ceilingFan.on();
-    }
+//     public void execute() {
+//         ceilingFan.on();
+//     }
 
-    public void undo() {
-        ceilingFan.off();
-    }
-}
+//     public void undo() {
+//         ceilingFan.off();
+//     }
+// }
