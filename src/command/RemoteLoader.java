@@ -2,7 +2,7 @@ package command;
 
 public class RemoteLoader {
     public static void main(String[] args) {
-        RemoteControl remoteControl = new RemoteControl();
+        RemoteControlWithUndo remoteControl = new RemoteControlWithUndo();
 
         Light livingRoomLight = new Light("リビングルーム");
         Light kitchenLight = new Light("キッチン");
@@ -33,6 +33,13 @@ public class RemoteLoader {
 
         remoteControl.onButtonWasPressed(0);
         remoteControl.offButtonWasPressed(0);
+        System.out.println(remoteControl);
+        remoteControl.undoButtonWasPressed();
+        remoteControl.offButtonWasPressed(0);
+        remoteControl.onButtonWasPressed(0);
+        System.out.println(remoteControl);
+        remoteControl.undoButtonWasPressed();
+
         remoteControl.onButtonWasPressed(1);
         remoteControl.offButtonWasPressed(1);
         remoteControl.onButtonWasPressed(2);
