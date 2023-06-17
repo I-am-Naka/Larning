@@ -1,7 +1,21 @@
 package command;
 
 public class GarageDoor {
-    public void up(){
-        System.out.println("ガレージのドアは開いています");
+    String name;
+
+    public GarageDoor(String name) {
+        this.name = name;
+    }
+
+    public GarageDoor() {
+        this("");
+    }
+
+    public void up() {
+        System.out.println(name + " " + "ガレージのドアは開いています");
+    }
+
+    public void down() {
+        System.out.println(name + " " + "ガレージのドアは閉じています");
     }
 }

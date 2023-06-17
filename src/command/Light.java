@@ -1,11 +1,21 @@
 package command;
 
 public class Light {
-    public void on() {
-        System.out.println("照明が点いています");
+    String name;
+
+    public Light(String name) {
+        this.name = name;
     }
 
-    public void off(){
-        System.out.println("照明が消えています");
+    public Light() {
+        this("");
+    }
+
+    public void on() {
+        System.out.println(name + " " + "照明が点いています");
+    }
+
+    public void off() {
+        System.out.println(name + " " + "照明が消えています");
     }
 }
